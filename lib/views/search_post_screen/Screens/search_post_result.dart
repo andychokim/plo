@@ -35,7 +35,6 @@ class _SearchPostResultState extends ConsumerState<SearchPostResult> {
 
   @override
   Widget build(BuildContext context) {
-    // final filterOptions = ref.watch(filterOptionsProvider);
     final filterOptions = ref.watch(filterOptionsProvider);
     return Scaffold(
       appBar: const HomeButtonAppBar(title: "홈으로"),

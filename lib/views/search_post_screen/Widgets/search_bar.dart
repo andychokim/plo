@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:plo/views/search_post_screen/Screens/search_post.dart';
+
+import '../Screens/search_post_loop.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final String searchQuery;
@@ -15,7 +16,7 @@ class CustomSearchBar extends StatelessWidget {
           hintText: searchQuery,
           leading: const Icon(Icons.search),
           onTap: () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SearchPostsHero()));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SearchPostsLoop()));
           },
           constraints: const BoxConstraints(maxHeight: 360, maxWidth: 275, minHeight: 50),
         ),
