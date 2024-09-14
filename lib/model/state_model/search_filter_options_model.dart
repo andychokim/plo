@@ -12,8 +12,8 @@ class FilterOptions {
   FilterOptions({
     this.searchQuery = "",
     this.categorySelected = const {
-      CategoryType.general,
       CategoryType.information,
+      CategoryType.general,
     },
     this.sortOptions = SortbyType.newest,
   });
@@ -32,11 +32,11 @@ class FilterOptions {
 
   List<String> getCategoryList() {
     List<String> categoryList = [];
-    // logToConsole("categorySelected: $categorySelected");
+    logToConsole("categorySelected: $categorySelected");
     for (var category in categorySelected) {
       categoryList.add("${PostModelFieldNameConstants.category}:${category.toString()}");
     }
-    // logToConsole("categoryList: $categoryList");
+    logToConsole("categoryList: $categoryList");
     return categoryList;
   }
 }

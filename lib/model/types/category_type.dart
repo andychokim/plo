@@ -27,9 +27,9 @@ enum CategoryType {
     }
   }
 
-  static bool isAllSelected(List<CategoryType> categoryList) {
-    return listEquals(categoryList, CategoryType.categoryOptions);
-  }
+  // static bool isAllSelected(List<CategoryType> categoryList) {
+  //   return listEquals(categoryList, CategoryType.categoryOptions);
+  // }
 
   static const List<CategoryType> categoryOptions = [
     CategoryType.information,

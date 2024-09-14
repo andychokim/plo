@@ -30,6 +30,7 @@ class _SearchPostResultState extends ConsumerState<SearchPostResult> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.watch(filterOptionsProvider.notifier).setSearchQuery(widget.searchQuery);
+      // ref.watch(filterOptionsProvider.notifier).setFilterOptions()
     });
   }
 

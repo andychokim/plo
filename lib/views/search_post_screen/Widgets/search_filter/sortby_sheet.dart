@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/common/widgets/default_button_widget.dart';
 
 import '../../../../common/widgets/modal_bottomsheet/default_modal_bottom.dart';
@@ -32,6 +33,7 @@ class _SortByBottomsheetState extends ConsumerState<SortByBottomsheet> {
   @override
   Widget build(BuildContext context) {
     final groupValue = ref.watch(tempGroupValueProvider);
+    logToConsole("SortbyType.values is: ${SortbyType.values}");
     return DefaultModalBottomSheet(
       title: "Sort by",
       child: Column(
