@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/views/search_post_screen/Widgets/search_history.dart';
 
+import '../../../common/widgets/custom_app_bar.dart';
 import '../Controllers/search_post_controller.dart';
 import 'search_post_result.dart';
 
-class SearchPostsHero extends ConsumerStatefulWidget {
-  const SearchPostsHero({super.key});
+class SearchPostsLoop extends ConsumerStatefulWidget {
+  const SearchPostsLoop({super.key});
 
   @override
   _SearchPostsHeroState createState() => _SearchPostsHeroState();
 }
 
-class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
+class _SearchPostsHeroState extends ConsumerState<SearchPostsLoop> {
   bool isFieldEmpty = false;
   List<String> searchHistory = [];
   final String searchHeroTag = "search";
@@ -26,11 +27,10 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
   @override
   Widget build(BuildContext context) {
     TextEditingController searchQuery = TextEditingController();
-    // final state = ref.watch(searchPostsProvider);
     log("Search build was called");
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // appBar: AppBar(),
+      appBar: const HomeButtonAppBar(title: "홈으로"),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),

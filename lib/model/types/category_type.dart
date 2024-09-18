@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 enum CategoryType {
-  information,
-  general;
+  general,
+  information;
 
   @override
   String toString() {
@@ -12,7 +10,7 @@ enum CategoryType {
       case CategoryType.general:
         return "general";
       default:
-        return "information";
+        return "general";
     }
   }
 
@@ -23,16 +21,16 @@ enum CategoryType {
       case "general":
         return CategoryType.general;
       default:
-        return CategoryType.information;
+        return CategoryType.general;
     }
   }
 
-  static bool isAllSelected(List<CategoryType> categoryList) {
-    return listEquals(categoryList, CategoryType.categoryOptions);
-  }
+  // static bool isAllSelected(List<CategoryType> categoryList) {
+  //   return listEquals(categoryList, CategoryType.categoryOptions);
+  // }
 
   static const List<CategoryType> categoryOptions = [
-    CategoryType.information,
     CategoryType.general,
+    CategoryType.information,
   ];
 }

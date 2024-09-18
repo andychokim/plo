@@ -30,12 +30,12 @@ class _SearchPostResultState extends ConsumerState<SearchPostResult> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.watch(filterOptionsProvider.notifier).setSearchQuery(widget.searchQuery);
+      // ref.watch(filterOptionsProvider.notifier).setFilterOptions()
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final filterOptions = ref.watch(filterOptionsProvider);
     final filterOptions = ref.watch(filterOptionsProvider);
     return Scaffold(
       appBar: const HomeButtonAppBar(title: "홈으로"),

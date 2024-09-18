@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/views/home_screen/widgets/mainpostlist.dart';
 import 'package:plo/views/home_screen/widgets/navigator_bar.dart';
 import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
-import 'package:plo/views/search_post_screen/Screens/search_post.dart';
+import 'package:plo/views/search_post_screen/Screens/search_post_initial.dart';
 import 'package:plo/views/settings_screen/settings_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {

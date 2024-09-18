@@ -21,7 +21,7 @@ class _FilterPageState extends ConsumerState<FilterSideBar> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(tempFilterOptionsProvider.notifier).setFilterOptions(widget.tempFilterOptions);
+      ref.read(tempFilterOptionsProvider.notifier).setFilterOptions(widget.tempFilterOptions);
     });
   }
 
@@ -84,7 +84,7 @@ class _FilterPageState extends ConsumerState<FilterSideBar> {
                         );
                       },
                       filterStatusWidget: FilterStatusWidget(
-                        isSingleAttribute: true,
+                        isSingleAttribute: false,
                         filterStatusList: tempFilterOptions.categorySelected.map((e) => e.toString().split('.').last).toList(),
                       ),
                     ),
@@ -93,14 +93,14 @@ class _FilterPageState extends ConsumerState<FilterSideBar> {
                       text: "Reset to default",
                       onPressed: () {
                         final searchQuery = tempFilterOptions.searchQuery;
-                        ref.watch(tempFilterOptionsProvider.notifier).setFilterOptions(FilterOptions(searchQuery: searchQuery));
+                        ref.read(tempFilterOptionsProvider.notifier).setFilterOptions(FilterOptions(searchQuery: searchQuery));
                       },
                     ),
                     const SizedBox(height: 15),
                     DefaultButtonWidget(
                       text: "Apply",
                       onPressed: () {
-                        ref.watch(filterOptionsProvider.notifier).setFilterOptions(tempFilterOptions);
+                        ref.read(filterOptionsProvider.notifier).setFilterOptions(tempFilterOptions);
                         Navigator.of(context).pop();
                       },
                     )
@@ -197,11 +197,12 @@ class FilterStatusSingleItemWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 7),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey[300]),
       child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            filterStatus,
-            style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.black, fontSize: 16),
-          )),
+        fit: BoxFit.scaleDown,
+        child: Text(
+          filterStatus,
+          style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.black, fontSize: 16),
+        ),
+      ),
     );
   }
 }

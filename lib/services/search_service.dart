@@ -42,8 +42,9 @@ class SearchService {
       final queryHits = SearchForHits(
         indexName: filterOptions.sortOptions.sortByAlgoliaIndexName(),
         query: filterOptions.searchQuery,
-        facetFilters: filterOptions.getCategoryList(),
+        facetFilters: [filterOptions.getCategoryList()],
       );
+      logToConsole("queryHits: ${queryHits}");
       final responseHits = await searchClient.searchIndex(request: queryHits);
 
       logToConsole("SearchService: Algolia response received with ${responseHits.hits.length} hits");
