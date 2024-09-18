@@ -24,10 +24,12 @@ class _FilterPageCategoryBottomSheetState extends ConsumerState<CategoryBottomSh
     super.initState();
     entireCategoryList = CategoryType.categoryOptions.toSet();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final category = ref.watch(tempFilterOptionsProvider).categorySelected;
-      final isAllSelected = CategoryType.categoryOptions.toSet().difference(category);
+      final selectedCategories = ref.read(tempFilterOptionsProvider).categorySelected;
+      ref.read(tempCategoryProvider.notifier).state = selectedCategories;
+      // final category = ref.watch(tempFilterOptionsProvider).categorySelected;
+      // final isAllSelected = CategoryType.categoryOptions.toSet().difference(category);
       // print("isAllSelected: $isAllSelected");
-      ref.watch(tempCategoryProvider.notifier).state = isAllSelected.isEmpty ? {} : category;
+      // ref.watch(tempCategoryProvider.notifier).state = isAllSelected.isEmpty ? {} : category;
     });
     entireCategoryList = CategoryType.categoryOptions.toSet();
   }
@@ -59,9 +61,9 @@ class _FilterPageCategoryBottomSheetState extends ConsumerState<CategoryBottomSh
             onPressed: () {
               // print("final $tempCategory");
               if (tempCategory.isEmpty) {
-                ref.watch(tempFilterOptionsProvider.notifier).setCategorySelected(CategoryType.categoryOptions.toSet());
+                ref.read(tempFilterOptionsProvider.notifier).setCategorySelected(CategoryType.categoryOptions.toSet());
               } else {
-                ref.watch(tempFilterOptionsProvider.notifier).setCategorySelected(tempCategory);
+                ref.read(tempFilterOptionsProvider.notifier).setCategorySelected(tempCategory);
               }
               Navigator.pop(context);
             },
@@ -86,10 +88,11 @@ class CategoryBottomSheetCategoryWidget extends ConsumerWidget {
       title: Text(categoryType.name),
       value: isChecked,
       onChanged: (bool? newValue) {
-        Set<CategoryType> set = {};
-        for (int i = 0; i < tempCategory.length; i++) {
-          set.add(tempCategory.elementAt(i));
-        }
+        Set<CategoryType> updatedCategories = Set.from(tempCategory);
+        // Set<CategoryType> set = {};
+        // for (int i = 0; i < tempCategory.length; i++) {
+        //   set.add(tempCategory.elementAt(i));
+        // }
 
         // if (isAll && !isAllSelected) {
         //   set = {};
@@ -98,12 +101,13 @@ class CategoryBottomSheetCategoryWidget extends ConsumerWidget {
         // }
 
         if (isChecked) {
-          set.remove(categoryType);
-          ref.watch(tempCategoryProvider.notifier).state = set;
+          updatedCategories.remove(categoryType);
+          // ref.watch(tempCategoryProvider.notifier).state = set;
         } else {
-          set.add(categoryType);
-          ref.watch(tempCategoryProvider.notifier).state = set;
+          updatedCategories.add(categoryType);
+          // ref.watch(tempCategoryProvider.notifier).state = set;
         }
+        ref.read(tempCategoryProvider.notifier).state = updatedCategories;
       },
       controlAffinity: ListTileControlAffinity.leading,
     );
