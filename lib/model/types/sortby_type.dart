@@ -9,23 +9,23 @@ enum SortbyType {
   String toString() {
     switch (this) {
       case SortbyType.newest:
-        return 'Newest';
+        return "최신순";
       case SortbyType.views:
-        return 'Views';
+        return "조회순";
       case SortbyType.likes:
-        return 'Likes';
+        return "좋아요순";
       default:
-        return 'Newest';
+        return "최신순";
     }
   }
 
   static SortbyType stringToSortybyType(String? string) {
     switch (string) {
-      case 'Newest':
+      case "최신순":
         return SortbyType.newest;
-      case 'Views':
+      case "조회순":
         return SortbyType.views;
-      case 'Likes':
+      case "좋아요순":
         return SortbyType.likes;
       default:
         return SortbyType.newest;

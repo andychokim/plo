@@ -33,9 +33,9 @@ class _SortByBottomsheetState extends ConsumerState<SortByBottomsheet> {
   @override
   Widget build(BuildContext context) {
     final groupValue = ref.watch(tempGroupValueProvider);
-    logToConsole("SortbyType.values is: ${SortbyType.values}");
+    // logToConsole("SortbyType.values is: ${SortbyType.values}");
     return DefaultModalBottomSheet(
-      title: "Sort by",
+      title: "정렬 기준",
       child: Column(
         children: [
           ...SortbyType.values.map(
@@ -45,7 +45,7 @@ class _SortByBottomsheetState extends ConsumerState<SortByBottomsheet> {
           ).toList(),
           const SizedBox(height: 30),
           DefaultButtonWidget(
-            text: "Apply",
+            text: "적용",
             onPressed: () {
               widget.isFromSearchResultScreen
                   ? ref.watch(filterOptionsProvider.notifier).setSortOption(groupValue)
@@ -75,7 +75,10 @@ class SortByRadioButtonWidget extends ConsumerWidget {
             ref.watch(tempGroupValueProvider.notifier).state = value as SortbyType;
           },
         ),
-        Text(sortbyType.toString()),
+        Text(
+          sortbyType.toString(),
+          style: const TextStyle(fontSize: 16),
+        ),
       ],
     );
   }

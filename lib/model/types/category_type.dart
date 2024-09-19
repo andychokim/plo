@@ -6,19 +6,19 @@ enum CategoryType {
   String toString() {
     switch (this) {
       case CategoryType.information:
-        return "information";
+        return "정보";
       case CategoryType.general:
-        return "general";
+        return "자유";
       default:
-        return "general";
+        return "자유";
     }
   }
 
   static stringToCategory(String string) {
     switch (string) {
-      case "information":
+      case "정보":
         return CategoryType.information;
-      case "general":
+      case "자유":
         return CategoryType.general;
       default:
         return CategoryType.general;
