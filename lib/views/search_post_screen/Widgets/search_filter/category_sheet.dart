@@ -40,7 +40,7 @@ class _FilterPageCategoryBottomSheetState extends ConsumerState<CategoryBottomSh
     // const categoryList = CategoryType.categoryOptions;
     logToConsole("CategoryType.values is: ${CategoryType.values}");
     return DefaultModalBottomSheet(
-      title: "Set the category",
+      title: "카테고리",
       child: Column(
         children: [
           ...CategoryType.values.map(
@@ -57,7 +57,7 @@ class _FilterPageCategoryBottomSheetState extends ConsumerState<CategoryBottomSh
           // ),
           const SizedBox(height: 10),
           DefaultButtonWidget(
-            text: "Apply",
+            text: "적용",
             onPressed: () {
               // print("final $tempCategory");
               if (tempCategory.isEmpty) {
@@ -85,7 +85,7 @@ class CategoryBottomSheetCategoryWidget extends ConsumerWidget {
     final tempCategory = ref.watch(tempCategoryProvider);
     // final isAllSelected = tempCategory.isEmpty;
     return CheckboxListTile(
-      title: Text(categoryType.name),
+      title: Text(categoryType.toString()),
       value: isChecked,
       onChanged: (bool? newValue) {
         Set<CategoryType> updatedCategories = Set.from(tempCategory);

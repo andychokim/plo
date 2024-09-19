@@ -43,11 +43,11 @@ class _FilterPageState extends ConsumerState<FilterSideBar> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const Text(
-                      "Filter Options",
+                      "검색 필터",
                     ),
                     // spacing
                     FilterOptionWidget(
-                      filterTitle: "Sort",
+                      filterTitle: "정렬 기준",
                       onPressed: () {
                         showModalBottomSheet(
                           isScrollControlled: true,
@@ -63,12 +63,14 @@ class _FilterPageState extends ConsumerState<FilterSideBar> {
                         );
                       },
                       filterStatusWidget: FilterStatusWidget(
-                        isSingleAttribute: true,
                         filterStatusList: [tempFilterOptions.sortOptions.toString()],
                       ),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     FilterOptionWidget(
-                      filterTitle: "Category",
+                      filterTitle: "카테고리",
                       onPressed: () {
                         showModalBottomSheet(
                           isScrollControlled: true,
@@ -84,13 +86,12 @@ class _FilterPageState extends ConsumerState<FilterSideBar> {
                         );
                       },
                       filterStatusWidget: FilterStatusWidget(
-                        isSingleAttribute: false,
                         filterStatusList: tempFilterOptions.categorySelected.map((e) => e.toString().split('.').last).toList(),
                       ),
                     ),
                     const SizedBox(height: 30),
                     DefaultButtonWidget(
-                      text: "Reset to default",
+                      text: "필터 리셋",
                       onPressed: () {
                         final searchQuery = tempFilterOptions.searchQuery;
                         ref.read(tempFilterOptionsProvider.notifier).setFilterOptions(FilterOptions(searchQuery: searchQuery));
@@ -98,7 +99,7 @@ class _FilterPageState extends ConsumerState<FilterSideBar> {
                     ),
                     const SizedBox(height: 15),
                     DefaultButtonWidget(
-                      text: "Apply",
+                      text: "필터 적용",
                       onPressed: () {
                         ref.read(filterOptionsProvider.notifier).setFilterOptions(tempFilterOptions);
                         Navigator.of(context).pop();
@@ -140,9 +141,7 @@ class FilterOptionWidget extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Text(
-                      filterTitle,
-                    ),
+                    Text(filterTitle),
                   ],
                 ),
                 const Spacer(),
@@ -158,30 +157,27 @@ class FilterOptionWidget extends StatelessWidget {
 }
 
 class FilterStatusWidget extends StatelessWidget {
-  final bool isSingleAttribute;
   final List<String> filterStatusList;
-  const FilterStatusWidget({super.key, this.isSingleAttribute = false, required this.filterStatusList});
+  const FilterStatusWidget({super.key, required this.filterStatusList});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 30),
-      child: isSingleAttribute
-          ? FilterStatusSingleItemWidget(filterStatus: filterStatusList[0])
-          : GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                crossAxisCount: 3,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                height: 30,
-              ),
-              itemCount: filterStatusList.length,
-              itemBuilder: (context, index) {
-                return FilterStatusSingleItemWidget(filterStatus: filterStatusList[index]);
-              },
-            ),
+      child: GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+          crossAxisCount: 3,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
+          height: 30,
+        ),
+        itemCount: filterStatusList.length,
+        itemBuilder: (context, index) {
+          return FilterStatusSingleItemWidget(filterStatus: filterStatusList[index]);
+        },
+      ),
     );
   }
 }
@@ -194,7 +190,7 @@ class FilterStatusSingleItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
-      padding: const EdgeInsets.symmetric(horizontal: 7),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey[300]),
       child: FittedBox(
         fit: BoxFit.scaleDown,

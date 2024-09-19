@@ -18,11 +18,9 @@ class DefaultModalBottomSheet extends StatelessWidget {
       height: fixedHeight ? MediaQuery.of(context).size.height * 0.5 : null,
       child: SafeArea(
         child: Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Padding(
-            padding:
-                const EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
+            padding: const EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -32,21 +30,19 @@ class DefaultModalBottomSheet extends StatelessWidget {
                     children: [
                       Expanded(
                         child: FittedBox(
-                            alignment: Alignment.centerLeft,
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              title!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .copyWith(fontSize: 20),
-                            )),
+                          alignment: Alignment.centerLeft,
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            title!,
+                            style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20),
+                          ),
+                        ),
                       )
                     ],
                   ),
                 if (title != null)
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                 child
               ],

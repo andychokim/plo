@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/common/widgets/post_list_widget.dart';
 import 'package:plo/views/search_post_screen/Widgets/search_filter/filter_button.dart';
@@ -68,7 +69,7 @@ class ProductResultWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print("Product result widget build was called");
+    logToConsole("Product result widget build was called");
     return Container(
       child: ref.watch(searchPostFutureProvider(filterOptions)).when(
             loading: () {
