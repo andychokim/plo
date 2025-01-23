@@ -8,6 +8,7 @@ import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/comment_report_model.dart';
 import 'package:plo/model/types/post_report_model.dart';
+import 'package:plo/model/types/report_comment_type.dart';
 import 'package:plo/model/types/report_type.dart';
 import 'package:plo/model/types/return_type.dart';
 import 'package:plo/repository/firebase_report_repository.dart';
@@ -27,7 +28,7 @@ class ReportPostController extends StateNotifier<AsyncValue<void>> {
   }
 
   Future<bool> uploadCommentReport(
-      {required ReportType reportType,
+      {required ReportCommentType reportType,
       required CommentModel comment,
       String? etcDescription,
       String? reportDescription,

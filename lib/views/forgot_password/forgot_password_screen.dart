@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/validator/validator.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
+import 'package:plo/views/Forgot_password/Forgot_password_controller.dart';
 import 'package:plo/views/forgot_password/forgot_password_check_email/check_email_Screen.dart';
-import 'package:plo/views/forgot_password/forgot_password_controller.dart';
 
 class ForgotPasswordScreen extends ConsumerWidget {
   const ForgotPasswordScreen({super.key});
@@ -12,22 +12,19 @@ class ForgotPasswordScreen extends ConsumerWidget {
     return Scaffold(
       appBar: const BackButtonAppBar(),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Expanded(
-              flex: 2,
-              child: Align(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Forgot Password'),
+                child: Text('Forgot Password', style: TextStyle(fontSize: 24)),
               ),
-            ),
-            Expanded(
-              flex: 6,
-              child: Form(
-                key: ref
-                    .watch(forgotPasswordControllerProvider.notifier)
-                    .formKey,
+              const SizedBox(height: 20), // Adding some space
+              Form(
+                key:
+                    ref.read(forgotPasswordControllerProvider.notifier).formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,10 +42,9 @@ class ForgotPasswordScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: TextButton(
+              const SizedBox(
+                  height: 20), // Adding space between form and button
+              TextButton(
                 onPressed: () async {
                   showDialog(
                       context: context,
@@ -57,21 +53,21 @@ class ForgotPasswordScreen extends ConsumerWidget {
                   final result = await ref
                       .watch(forgotPasswordControllerProvider.notifier)
                       .sendResetPasswordEmail();
-                  Navigator.of(context).pop;
+                  Navigator.of(context).pop(); // Fixed pop function
                   if (result) {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            const forgotPasswordCheckEmailScreen(),
+                            const ForgotPasswordCheckEmailScreen(),
                       ),
                     );
                   }
                 },
                 child: const Text("Next"),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

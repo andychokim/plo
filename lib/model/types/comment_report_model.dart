@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plo/constants/error_replacement_constants.dart';
+import 'package:plo/model/types/report_comment_type.dart';
 import 'package:plo/model/types/report_type.dart';
 
 class CommentReportModelConstants {
@@ -17,7 +18,7 @@ class CommentReportModel {
   final String uploadUserUid;
   final String reportingUserUid;
   final Timestamp uploadTime;
-  final ReportType reportType;
+  final ReportCommentType reportType;
   final String? etcDescription;
   final String reportDetail;
 

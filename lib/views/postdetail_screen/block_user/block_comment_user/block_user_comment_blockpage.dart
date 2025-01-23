@@ -5,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/common/widgets/profile_circular_image.dart';
 import 'package:plo/model/user_model.dart';
-import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsheet.dart';
+import 'package:plo/views/postdetail_screen/block_user/block_comment_user/block_user_comment_modal_bottomsheet.dart';
 
-class BlockedUserModalBottomSheetBlockPage extends ConsumerWidget {
+class BlockedUserModalBottomSheetCommentBlockPage extends ConsumerWidget {
   final UserModel currentUser;
   final UserModel blockingUser;
   final bool isBlocked;
-  const BlockedUserModalBottomSheetBlockPage(
+  const BlockedUserModalBottomSheetCommentBlockPage(
       {super.key,
       required this.currentUser,
       required this.blockingUser,
@@ -47,16 +47,17 @@ class BlockedUserModalBottomSheetBlockPage extends ConsumerWidget {
           ),
           const Spacer(),
           CustomButton(
-              text: isBlocked ? "차단하기" : "차단 해제",
-              onPressed: () {
-                log("Button pressed to ${isBlocked ? 'block' : 'unblock'} the user");
+            text: isBlocked ? "차단" : "네 알겠습니다",
+            onPressed: () {
+              log("Button pressed to ${isBlocked ? 'block' : 'unblock'} the user");
 
-                ref
-                    .watch(blockedUserModalBottomSheetIsBlockPressedProvider
-                        .notifier)
-                    .state = true;
-                log("State updated: ${ref.read(blockedUserModalBottomSheetIsBlockPressedProvider)}");
-              })
+              ref
+                  .read(blockedUserModalBottomSheetCommentIsBlockPressedProvider
+                      .notifier)
+                  .state = true;
+              log("State updated: ${ref.read(blockedUserModalBottomSheetCommentIsBlockPressedProvider)}");
+            },
+          )
         ],
       ),
     );

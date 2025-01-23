@@ -7,4 +7,5 @@ class FirebaseConstants {
   static const String commentscollectionName = "comments";
   static const String reportCommentsRecordsCollectionName =
       "reportCommentRecords";
+  static const String adminUsers = "adminUsers";
 }

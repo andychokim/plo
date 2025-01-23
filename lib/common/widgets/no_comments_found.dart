@@ -6,15 +6,14 @@ class NoCommentsFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      child: Expanded(
+    return Center(
+      child: SizedBox(
+        width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error, size: 40),
+            const Icon(Icons.error, size: 30),
             FittedBox(
               child: Text(
                 message,
@@ -29,5 +28,7 @@ class NoCommentsFound extends StatelessWidget {
         ),
       ),
     );
+
+    ;
   }
 }

@@ -119,7 +119,7 @@ class FirebaseReportRepository {
         _logHelper("Update", "uploadPostReportModelToFirebase");
       } else {
         await _firebase
-            .collection(FirebaseConstants.reportRecordscollectionName)
+            .collection(FirebaseConstants.reportCommentsRecordsCollectionName)
             .doc(commentKey.cid)
             .collection(FirebaseConstants.reportCommentsRecordsCollectionName)
             .doc(commentReportModel.reportingUserUid)

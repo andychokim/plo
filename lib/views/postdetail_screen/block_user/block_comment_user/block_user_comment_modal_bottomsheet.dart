@@ -6,19 +6,20 @@ import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
 import 'package:plo/views/comments/comments_detail_screen.dart';
 import 'package:plo/views/postdetail_screen/block_user/blocK_user_result_screen.dart';
-import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsheet_page.dart';
-import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
+import 'package:plo/views/postdetail_screen/block_user/block_comment_user/block_user_comment_blockpage.dart';
 
-final blockedUserModalBottomSheetIsBlockPressedProvider =
+final blockedUserModalBottomSheetCommentIsBlockPressedProvider =
     StateProvider.autoDispose<bool>((ref) => false);
-final blockedUserModalBottomSheetCurrentUserFutureProvider =
+
+final blockedUserModalBottomSheetCommentCurrentUserFutureProvider =
     FutureProvider.autoDispose<UserModel?>((ref) async {
   final currentUser =
       await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return currentUser;
 });
 
-final blockUserBottomSheetBlockUserFutureProvider = FutureProvider.autoDispose
+final blockUserBottomSheetCommentBlockUserFutureProvider = FutureProvider
+    .autoDispose
     .family<ReturnType, String>((ref, blockingUserUid) async {
   return await ref
       .watch(firebaseUserRepositoryProvider)
@@ -33,12 +34,12 @@ class BlockCommentUserModalBottomsheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isBlockPressed =
-        ref.watch(blockedUserModalBottomSheetIsBlockPressedProvider);
+        ref.watch(blockedUserModalBottomSheetCommentIsBlockPressedProvider);
     return DefaultModalBottomSheet(
       title: "차단/차단 해제",
       fixedHeight: true,
       child: ref
-          .watch(blockedUserModalBottomSheetCurrentUserFutureProvider)
+          .watch(blockedUserModalBottomSheetCommentCurrentUserFutureProvider)
           .when(
             data: (user) {
               if (user == null) {
@@ -52,7 +53,7 @@ class BlockCommentUserModalBottomsheet extends ConsumerWidget {
                             isBlocked: !user.blockedUsers
                                 .contains(blockingUser.userUid),
                           )
-                        : BlockedUserModalBottomSheetBlockPage(
+                        : BlockedUserModalBottomSheetCommentBlockPage(
                             currentUser: user,
                             blockingUser: blockingUser!,
                             isBlocked: !user.blockedUsers
@@ -67,7 +68,7 @@ class BlockCommentUserModalBottomsheet extends ConsumerWidget {
             error: (error, stackTrace) =>
                 const Icon(Icons.error_outline, size: 50),
             loading: () => const Center(
-              child: CircularProgressIndicator(),
+              child: Center(child: CircularProgressIndicator()),
             ),
           ),
     );

@@ -71,6 +71,26 @@ class FirebaseUserRepository {
     }
   }
 
+  Future<bool> userAdmin(String userUid) async {
+    try {
+      DocumentSnapshot documentSnapshot = await _firebase
+          .collection(FirebaseConstants.adminUsers)
+          .doc(userUid)
+          .get();
+      log("Document data: ${documentSnapshot.data()}");
+
+      if (documentSnapshot.exists && documentSnapshot.data() != null) {
+        log("Document exists for UID: $userUid");
+
+        return true;
+      }
+      return false;
+    } catch (error) {
+      log("User Repository is UserAdmin error: ${error}");
+      return false;
+    }
+  }
+
   Future<ReturnType> blockUser(String blockingUserUid) async {
     try {
       bool isUserBlocked = false;

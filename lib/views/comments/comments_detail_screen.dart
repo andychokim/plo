@@ -28,8 +28,12 @@ final commentUploaderProvider =
 class CommentDetailScreen extends ConsumerWidget {
   final CommentModel commentKey;
   final PostModel postKey;
+  final bool isFromBlockedUser;
   const CommentDetailScreen(
-      {super.key, required this.commentKey, required this.postKey});
+      {super.key,
+      required this.commentKey,
+      required this.postKey,
+      this.isFromBlockedUser = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,17 +77,28 @@ class CommentDetailScreen extends ConsumerWidget {
         //   );
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                  child: CommentProfileWidget(
-                commentKey: commentKey,
-                postKey: postKey,
-              )),
-            ],
-          ),
+          child: isFromBlockedUser
+              ? Row(
+                children: [
+                  Center(
+                      child: Text("댓글이 차단된 유저입니다!",
+                          style:
+                              TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                    
+                ],
+              )
+              : Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: CommentProfileWidget(
+                      commentKey: commentKey,
+                      postKey: postKey,
+                    )),
+                  ],
+                ),
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
