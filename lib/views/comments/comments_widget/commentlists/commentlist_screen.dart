@@ -45,7 +45,7 @@ class CommentListScreen extends ConsumerWidget {
                 child: state.isLoading
                     ? const LoadingExpandedCommentsWidget()
                     : comments.length == 0
-                        ? Center(child: NoCommentsFound())
+                        ? const NoCommentsFound()
                         : ListView.separated(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             controller: ref
@@ -73,6 +73,10 @@ class CommentListScreen extends ConsumerWidget {
                                   commentKey:
                                       comments[index], // Display comment
                                   postKey: postKey,
+                                  isFromBlockedUser: currentUser == null
+                                      ? false
+                                      : currentUser.blockedUsers.contains(
+                                          comments[index].commentsUserUid),
                                 ),
                               );
                             },

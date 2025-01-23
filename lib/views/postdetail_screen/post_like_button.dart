@@ -32,7 +32,7 @@ class _PostDetailLikeButtonState extends ConsumerState<PostDetailLikeButton> {
     final bool isLiked = user.likedPosts.contains(post.pid);
     return LikeButton(
       size: 30,
-      isLiked: isLiked,
+      isLiked: !isLiked,
       circleColor:
           const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
       bubblesColor: const BubblesColor(
@@ -48,10 +48,7 @@ class _PostDetailLikeButtonState extends ConsumerState<PostDetailLikeButton> {
         final result = await ref
             .read(postDetailControllerProvider.notifier)
             .toggleLike(widget.postKey, post);
-
-        setState(() {
-          isLiked = !isLiked;
-        });
+        // return !isLiked;
         return result;
       },
     );

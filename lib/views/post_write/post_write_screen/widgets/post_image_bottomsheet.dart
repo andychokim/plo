@@ -17,7 +17,7 @@ class CreateEditPostImage extends ConsumerWidget {
               ref
                   .read(createEditPostStateController.notifier)
                   .pickImageFromCamera();
-              Navigator.of(context).pop;
+              Navigator.of(context).pop();
             }),
         ListTile(
           leading: const Icon(Icons.photo_library),
@@ -26,7 +26,7 @@ class CreateEditPostImage extends ConsumerWidget {
             ref
                 .read(createEditPostStateController.notifier)
                 .pickMultipleImagesFromGallery();
-            Navigator.of(context).pop;
+            Navigator.of(context).pop();
           },
         )
       ]),

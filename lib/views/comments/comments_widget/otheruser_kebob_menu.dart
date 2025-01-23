@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/common/widgets/modal_bottomsheet/default_modal_bottom.dart';
 import 'package:plo/common/widgets/modal_bottomsheet/modal_bottom_icon.dart';
 import 'package:plo/model/comments_model.dart';
-import 'package:plo/model/post_model.dart';
-import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
-import 'package:plo/views/postdetail_screen/block_user/block_user_comment_modal_bottomsheet.dart';
-import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsheet.dart';
-import 'package:plo/views/postdetail_screen/report_screen/reportScreen.dart';
+
+import 'package:plo/views/postdetail_screen/block_user/block_comment_user/block_user_comment_modal_bottomsheet.dart';
+
 import 'package:plo/views/postdetail_screen/report_screen/report_screen_comment/report_comment_screen.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 

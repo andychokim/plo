@@ -10,7 +10,6 @@ class CommentsRepository {
   final Ref ref;
   final _firestoreInstance = FirebaseFirestore.instance;
   CommentsRepository(this.ref);
-
   Future<bool> uploadCommentToFirebase(
       String postPid, CommentModel comment, bool isForEdit) async {
     final commentModel = comment.toJson();
@@ -23,11 +22,6 @@ class CommentsRepository {
             .doc(comment.cid)
             .update(commentModel);
         log("Comment is updated in the firebase as the subCollection for the PostCollection");
-        // await _firestoreInstance
-        //     .collection(FirebaseConstants.commentscollectionName)
-        //     .doc(comment.cid)
-        //     .update(commentModel);
-        // log("Comment is updated in the firebase for the comment collection");
       } else {
         final commentRef = await _firestoreInstance
             .collection(FirebaseConstants.postcollectionName)
@@ -36,10 +30,6 @@ class CommentsRepository {
             .doc(comment.cid)
             .set(commentModel);
         log("commentmodel is uploaded in the firebase as the subCollection for the PostCollection");
-        // await _firestoreInstance
-        //     .collection(FirebaseConstants.commentscollectionName)
-        //     .doc(commentRef.id)
-        //     .set(commentModel);
       }
       return true;
     } catch (error) {
@@ -48,7 +38,6 @@ class CommentsRepository {
     }
   }
 
-  //이렇게 해보고 안 되면 String Pid 말고 아예 PostModel로 Controller도 바꿔주기.
   Future<List<CommentModel>?> fetchComments(String pid,
       {int amountFetch = 10, Timestamp? lastCommentUploadTime}) async {
     try {

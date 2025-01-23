@@ -102,6 +102,7 @@ class AuthMethods {
 
   Future<void> signOut() async {
     await _auth.signOut();
+    ref.read(currentUserProvider.notifier).setUser(null);
   }
 
   Future<String> deleteUserAccount() async {

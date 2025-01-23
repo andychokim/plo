@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:plo/common/providers/admin_provider.dart';
 import 'package:plo/extensions/ref_dipsose.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
@@ -39,9 +42,12 @@ class CheckAppRequirementController extends StateNotifier<AsyncValue<void>> {
       // ref.watch(isProfileSetUpProvider.notifier).state = true;
       ref.read(currentUserProvider.notifier).setUser(userFetched);
     }
-    // ref.read(notificationSettingRepositoryProvider).init(FirebaseAuth.instance.currentUser!.uid, context);
-    // final isUserAdmin = await ref.watch(firebaseUserRepositoryProvider).isUserAdmin(FirebaseAuth.instance.currentUser!.uid);
-    // ref.read(isAdminProvider.notifier).state = isUserAdmin;
+    final isUserAdmin = await ref
+        .watch(firebaseUserRepositoryProvider)
+        .userAdmin(FirebaseAuth.instance.currentUser!.uid);
+    log("Is user admin: $isUserAdmin");
+
+    ref.read(isAdminProvider.notifier).state = isUserAdmin;
 
     state = const AsyncValue.data(null);
   }

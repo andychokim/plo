@@ -25,16 +25,23 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   @override
   void dispose() {
-    super.dispose();
-    _formKey.currentState?.dispose();
+    // _formKey.currentState?.dispose();
     emailController.dispose();
     passwordController.dispose();
+    super.dispose();
   }
 
   static const defaultSpacing = SizedBox(height: 10);
   @override
   Widget build(BuildContext context) {
     return CustomInitialScreen(
+      appBar: AppBar(
+          leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      )),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +72,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   );
                 },
                 child: const Text("Forgot Password?",
-                    style: TextStyle(fontSize: 11)),
+                    style: TextStyle(fontSize: 14)),
               ),
             ],
           ),
@@ -161,7 +168,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             child: const Text("Continue Without Login",
                 style: TextStyle(color: Colors.black)),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HomeScreen(),

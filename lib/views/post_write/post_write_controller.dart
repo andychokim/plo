@@ -75,8 +75,10 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
       ref.read(imageLoadingProvider.notifier).state = false;
       state = AsyncError(result.message!, StackTrace.current);
       state = const AsyncData(null);
+
       return;
     } else if (result is SuccessReturnType && result.data == null) {
+      ref.read(imageLoadingProvider.notifier).state = true;
       return;
     }
     final List<File?> images = result.data as List<File?>;
@@ -111,8 +113,11 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
         ref.read(imageLoadingProvider.notifier).state = false;
         state = AsyncError(result.message!, StackTrace.current);
         state = const AsyncData(null);
+
         return;
       } else if (result is SuccessReturnType && result.data == null) {
+        ref.read(imageLoadingProvider.notifier).state = false;
+
         return;
       }
       if (result is SuccessReturnType && result.data != null) {

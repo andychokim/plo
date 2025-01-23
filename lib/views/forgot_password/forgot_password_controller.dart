@@ -15,7 +15,7 @@ class ForgotPasswordController extends StateNotifier<AsyncValue<void>> {
   Future<bool> sendResetPasswordEmail() async {
     if (_formKey.currentState!.validate()) {
       final result = await ref
-          .watch(authRepository)
+          .read(authRepository)
           .sendPasswordEmail(_emailController.text);
       if (result != ReturnTypeENUM.success.toString()) {
         state = AsyncValue.error(result, StackTrace.current);
@@ -28,8 +28,9 @@ class ForgotPasswordController extends StateNotifier<AsyncValue<void>> {
 
   Future<bool> resendResetPasswordEmail() async {
     if (_formKey.currentState!.validate()) {
-      final result =
-          ref.watch(authRepository).sendPasswordEmail(_emailController.text);
+      final result = await ref
+          .read(authRepository)
+          .sendPasswordEmail(_emailController.text);
       if (result != ReturnTypeENUM.success.toString()) {
         state = AsyncValue.error(result, StackTrace.current);
       }

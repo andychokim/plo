@@ -43,7 +43,6 @@ class CommentScreen extends ConsumerStatefulWidget {
 }
 
 class _CommentWriteScreenState extends ConsumerState<CommentScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {

@@ -8,14 +8,15 @@ import 'package:plo/common/widgets/custom_alert_box.dart';
 import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
+import 'package:plo/model/types/report_comment_type.dart';
 import 'package:plo/model/types/report_type.dart';
 import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
 import 'package:plo/views/postdetail_screen/report_screen/report_screen_comment/report_comment_controller.dart';
 import 'package:plo/views/postdetail_screen/report_screen/report_screen_controller.dart';
 import 'package:plo/views/postdetail_screen/report_screen/reportsuccessPage.dart';
 
-final selectedReportTypeProvider =
-    StateProvider.autoDispose<ReportType>((ref) => ReportType.values.first);
+final selectedReportTypeProvider = StateProvider.autoDispose<ReportCommentType>(
+    (ref) => ReportCommentType.values.first);
 
 class ReportCommentFormWidget extends ConsumerStatefulWidget {
   final CommentModel commentKey;
@@ -35,7 +36,8 @@ class _ReportFormWidgetState extends ConsumerState<ReportCommentFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ReportType selectedReportType = ref.watch(selectedReportTypeProvider);
+    ReportCommentType selectedReportType =
+        ref.watch(selectedReportTypeProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,10 +47,10 @@ class _ReportFormWidgetState extends ConsumerState<ReportCommentFormWidget> {
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: ReportType.values.length,
+          itemCount: ReportCommentType.values.length,
           padding: EdgeInsets.zero,
           itemBuilder: (context, index) {
-            final reportType = ReportType.values[index];
+            final reportType = ReportCommentType.values[index];
             return RadioListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10),
                 activeColor: const Color.fromARGB(255, 128, 120, 120),
@@ -61,7 +63,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportCommentFormWidget> {
                 });
           },
         ),
-        if (selectedReportType == ReportType.etc)
+        if (selectedReportType == ReportCommentType.etc)
           TextField(
             controller: etcDescriptionController,
             maxLines: 3,
@@ -115,8 +117,8 @@ class _ReportFormWidgetState extends ConsumerState<ReportCommentFormWidget> {
     );
   }
 
-  void showReportPopUp(BuildContext context, ReportType selectedReportType,
-      WidgetRef ref) async {
+  void showReportPopUp(BuildContext context,
+      ReportCommentType selectedReportType, WidgetRef ref) async {
     bool? isConfirmed =
         await AlertBox.showYesOrNoAlertDialogue(context, "진짜로 신고 하시겠습니까?");
     if (isConfirmed == true) {

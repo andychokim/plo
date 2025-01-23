@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/providers/admin_provider.dart';
 import 'package:plo/common/widgets/custom_alert_box.dart';
 import 'package:plo/repository/auth_repository.dart';
+import 'package:plo/views/admin/admin_main_screen.dart';
 import 'package:plo/views/log_in_screen/log_in_screen.dart';
 import 'package:plo/views/settings_screen/likedpost_screen.dart';
 import 'package:plo/views/settings_screen/mypost_screen.dart';
@@ -11,13 +13,14 @@ import 'package:plo/views/settings_screen/savedpost_screen.dart';
 import 'package:plo/views/settings_screen/settings_controller.dart';
 import 'package:plo/views/settings_screen/widgets/list_button_widget.dart';
 import 'package:plo/views/settings_screen/widgets/modal_bottom_sheet.dart';
+import 'package:plo/views/welcome_screen/welcome_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   void goToSignInScreen(BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const SignInScreen()),
+        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
         (Route<dynamic> route) => false);
   }
 
@@ -25,7 +28,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsyncValue = ref.watch(userProvider);
     final user = ref.watch(userInfoProvider);
-
+    print("my profile screen isAdmin : ${ref.watch(isAdminProvider)}");
     return Scaffold(
       body: userAsyncValue.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -82,7 +85,39 @@ class SettingsScreen extends ConsumerWidget {
                         thickness: 5,
                       ),
                       const SizedBox(height: 15),
-
+                      if (ref.watch(isAdminProvider))
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: const Text(
+                                "게시물 관리자",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 100, 100, 100)),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            ListButtonWidget(
+                              title: "게시물 관리",
+                              icon: const Icon(
+                                Icons.edit,
+                                size: 33,
+                              ),
+                              callback: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AdminMainScren(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       //나만의 기록들
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

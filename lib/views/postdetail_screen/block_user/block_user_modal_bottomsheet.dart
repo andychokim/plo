@@ -10,6 +10,7 @@ import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
 
 final blockedUserModalBottomSheetIsBlockPressedProvider =
     StateProvider.autoDispose<bool>((ref) => false);
+
 final blockedUserModalBottomSheetCurrentUserFutureProvider =
     FutureProvider.autoDispose<UserModel?>((ref) async {
   final currentUser =
