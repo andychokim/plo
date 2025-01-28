@@ -103,7 +103,7 @@ class _ManageReportPostScreen extends ConsumerState<ManageReportPostScreen> {
                       onPressed: () async {
                         final post = await ref
                             .watch(firebasePostRepositoryProvider)
-                            .fetchPostByPostUid(widget.pid);
+                            .fetchPostByPostPid(widget.pid);
                         if (post != null) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
