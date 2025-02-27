@@ -6,8 +6,10 @@ import 'package:plo/repository/firebase_comments_repository.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/services/like_post_service.dart';
 import 'package:plo/views/home_screen/main_post_list_provider.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
+
+import '../../../common/providers/login_verification_provider.dart';
 
 class PostDetailController extends StateNotifier<AsyncValue<void>> {
   Ref ref;
@@ -17,7 +19,7 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
 
   _init() async {}
   void updateViewCounts(PostModel postKey) async {
-    final proceedWithoutLogin = ref.watch(proceedWithoutLoginProvider);
+    final proceedWithoutLogin = ref.watch(anonymousLogInProvider);
     if (proceedWithoutLogin) {
       return;
     }
@@ -31,9 +33,7 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
       if (alreadySeenThePost == false) {
         List<String> updatedViews = post.postViewList;
         updatedViews.add(user.userUid);
-        final int result = await ref
-            .watch(firebasePostRepositoryProvider)
-            .updateViews(updatedViews, post);
+        final int result = await ref.watch(firebasePostRepositoryProvider).updateViews(updatedViews, post);
         if (result != -1) {
           PostModel postToBeUpdated = post.update(postViewList: updatedViews);
           _updatePost(postKey, postToBeUpdated);
@@ -44,9 +44,7 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
 
   void updateComments(PostModel postKey) async {
     final post = ref.read(singlePostProvider(postKey));
-    final int commentCount = await ref
-        .watch(firebasePostRepositoryProvider)
-        .updateCommentCountInPostModel(postKey.pid);
+    final int commentCount = await ref.watch(firebasePostRepositoryProvider).updateCommentCountInPostModel(postKey.pid);
     if (commentCount != 1) {
       PostModel postToBeUpdated = post.update(commentCount: commentCount);
       _updatePost(postKey, postToBeUpdated);
@@ -57,9 +55,7 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
     ref.read(singlePostProvider(postKey).notifier).updatePost(postToBeUpdated);
 
     if (ref.read(mainPostListProvider.notifier).mounted) {
-      ref
-          .read(mainPostListProvider.notifier)
-          .updateSingePostInPostList(postToBeUpdated);
+      ref.read(mainPostListProvider.notifier).updateSingePostInPostList(postToBeUpdated);
     }
   }
 
@@ -74,20 +70,15 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
     if (user == null) {
       return false;
     }
-    int? postLikeCountAfterUpdate = await ref
-        .watch(likedPostServiceProvider)
-        .likedPosts(user.userUid, post.pid);
+    int? postLikeCountAfterUpdate = await ref.watch(likedPostServiceProvider).likedPosts(user.userUid, post.pid);
 
-    PostModel postToBeUpdated =
-        post.update(postLikes: postLikeCountAfterUpdate);
+    PostModel postToBeUpdated = post.update(postLikes: postLikeCountAfterUpdate);
     _updatePost(postKey, postToBeUpdated);
     return true;
   }
 }
 
-final postDetailControllerProvider =
-    StateNotifierProvider.autoDispose<PostDetailController, AsyncValue<void>>(
-        (ref) {
+final postDetailControllerProvider = StateNotifierProvider.autoDispose<PostDetailController, AsyncValue<void>>((ref) {
   ref.logDisposeToConsole("postDetailControllerProvider Disposed");
   return PostDetailController(ref);
 });

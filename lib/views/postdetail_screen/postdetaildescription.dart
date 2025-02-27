@@ -105,9 +105,10 @@ import 'package:plo/common/utils/functions.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/category_type.dart';
 import 'package:plo/common/providers/singlepost.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:plo/views/postdetail_screen/postpicture.dart';
-import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
+
+import '../../common/providers/login_verification_provider.dart';
 
 class PostDetailWidget extends ConsumerStatefulWidget {
   final PostModel postKey;
@@ -127,7 +128,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
   Widget build(BuildContext context) {
     final post = ref.watch(singlePostProvider(widget.postKey));
     final currentUser = ref.watch(currentUserProvider);
-    final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
+    final isNotSignedUser = ref.watch(anonymousLogInProvider);
     return SingleChildScrollView(
       child: Column(
         children: [

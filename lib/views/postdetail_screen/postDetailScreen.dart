@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/providers/login_verification_provider.dart';
 import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/common/widgets/detail_no_like_button.dart';
 import 'package:plo/model/comments_model.dart';
@@ -16,7 +17,7 @@ import 'package:plo/views/comments/comments_widget/commentlists/comments_list_co
 import 'package:plo/views/comments/comments_widget/comments_contentform.dart';
 import 'package:plo/views/comments/comments_widget/comments_screen.dart';
 import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:plo/views/postdetail_screen/homescreenbuttonwidget.dart';
 import 'package:plo/views/postdetail_screen/other_post/postdetailuserotherposts.dart';
 import 'package:plo/views/postdetail_screen/post_detail_controller/post_detail_controller.dart';
@@ -26,15 +27,12 @@ import 'package:plo/views/postdetail_screen/postdetaildescription.dart';
 import 'package:plo/views/postdetail_screen/postdetailsamecategory.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
-final postUploaderProvider =
-    FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
-  final userFetched =
-      await ref.watch(firebaseUserRepositoryProvider).fetchUserbyUid(userUid);
+final postUploaderProvider = FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
+  final userFetched = await ref.watch(firebaseUserRepositoryProvider).fetchUserbyUid(userUid);
   return userFetched;
 });
 
-final postDetailCurrentUserFutureProvider =
-    FutureProvider.autoDispose<UserModel?>((ref) async {
+final postDetailCurrentUserFutureProvider = FutureProvider.autoDispose<UserModel?>((ref) async {
   final user = await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return user;
 });
@@ -49,11 +47,9 @@ class PostDetailScreen extends ConsumerWidget {
     ref.watch(postDetailControllerProvider.notifier).updateViewCounts(postKey);
     ref.watch(postDetailControllerProvider.notifier).updateComments(postKey);
     final state = ref.watch(postDetailControllerProvider);
-    final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
+    final isNotSignedUser = ref.watch(anonymousLogInProvider);
     final user = ref.watch(currentUserProvider);
-    final isMyPost = ref.watch(proceedWithoutLoginProvider)
-        ? false
-        : postKey.uploadUserUid == user!.userUid;
+    final isMyPost = ref.watch(anonymousLogInProvider) ? false : postKey.uploadUserUid == user?.userUid;
     final post = ref.watch(singlePostProvider(postKey));
 
     return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
@@ -65,9 +61,7 @@ class PostDetailScreen extends ConsumerWidget {
                 automaticallyImplyLeading: false,
                 elevation: 0,
                 backgroundColor: Colors.transparent,
-                actions: [
-                  PostFloatingButton(postKey: postKey, parentContext: context)
-                ],
+                actions: [PostFloatingButton(postKey: postKey, parentContext: context)],
               ),
               body: SafeArea(
                 child: state.isLoading
@@ -84,23 +78,19 @@ class PostDetailScreen extends ConsumerWidget {
                                   PostDetailProfileWidget(postKey: postKey),
                                   const SizedBox(height: 10),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
                                     child: PostDetailWidget(postKey: postKey),
                                   ),
                                   const SizedBox(height: 15),
                                   Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10.0),
+                                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                         child: isNotSignedUser
                                             ? const DetailNoLikeButton()
                                             : SizedBox(
-                                                child: PostDetailLikeButton(
-                                                    postKey: postKey),
+                                                child: PostDetailLikeButton(postKey: postKey),
                                               ),
                                       ),
                                       const Icon(Icons.comment),
@@ -124,8 +114,7 @@ class PostDetailScreen extends ConsumerWidget {
                       ),
               ),
               bottomNavigationBar: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                 child: SafeArea(
                   child: Container(
                     child: Column(
@@ -135,16 +124,12 @@ class PostDetailScreen extends ConsumerWidget {
                           width: 350,
                           height: 60,
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black),
+                            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                             onPressed: () {
                               showModalBottomSheet(
                                 context: context,
                                 builder: (context) => Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: MediaQuery.of(context)
-                                          .viewInsets
-                                          .bottom),
+                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -161,56 +146,36 @@ class PostDetailScreen extends ConsumerWidget {
                                             showDialog(
                                               context: context,
                                               barrierDismissible: false,
-                                              builder: (context) =>
-                                                  const SizedBox(
+                                              builder: (context) => const SizedBox(
                                                 width: 20,
                                                 height: 20,
-                                                child: Center(
-                                                    child:
-                                                        CircularProgressIndicator()),
+                                                child: Center(child: CircularProgressIndicator()),
                                               ),
                                             );
-                                            final result = await ref
-                                                .read(
-                                                    createEditCommentController
-                                                        .notifier)
-                                                .uploadComment(
+                                            final result = await ref.read(createEditCommentController.notifier).uploadComment(
                                                   formKey: _formKey,
                                                   postPid: postKey.pid,
                                                 );
                                             Navigator.of(context).pop();
                                             if (result == true) {
-                                              await Future.delayed(
-                                                  const Duration(
-                                                      milliseconds: 100));
+                                              await Future.delayed(const Duration(milliseconds: 100));
                                               Navigator.of(context).pop();
-                                              ref.refresh(commentListController(
-                                                  postKey.pid));
-                                              ref
-                                                  .read(
-                                                      createEditCommentController
-                                                          .notifier)
-                                                  .commentContentController
-                                                  .clear();
+                                              ref.refresh(commentListController(postKey.pid));
+                                              ref.read(createEditCommentController.notifier).commentContentController.clear();
                                             } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
+                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 const SnackBar(
-                                                  content:
-                                                      Text("댓글을 올리는데 실패 했습니다."),
+                                                  content: Text("댓글을 올리는데 실패 했습니다."),
                                                 ),
                                               );
                                             }
                                           },
                                           child: const Row(
                                             mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.comment,
-                                                  color: Colors.white),
+                                              Icon(Icons.comment, color: Colors.white),
                                               Spacer(),
                                               Text(
                                                 "글 작성",
@@ -240,10 +205,7 @@ class PostDetailScreen extends ConsumerWidget {
                             },
                             child: const Text(
                               "글 쓰기 ",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                             ),
                           ),
                         ),

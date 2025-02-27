@@ -104,7 +104,7 @@ class _ManageReportCommentScreen
 
                         final post = await ref
                             .watch(firebasePostRepositoryProvider)
-                            .fetchPostByPostUid(widget.pid);
+                            .fetchPostByPostPid(widget.pid);
                         if (comment != null && post != null) {
                           Navigator.of(context).push(
                             MaterialPageRoute(

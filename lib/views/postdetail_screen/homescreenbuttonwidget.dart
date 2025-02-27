@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/common/providers/singlepost.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:plo/views/postdetail_screen/currentUserBottomSheet.dart';
 import 'package:plo/views/postdetail_screen/otherUserBottomSheet.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
+
+import '../../common/providers/login_verification_provider.dart';
 
 class PostFloatingButton extends ConsumerWidget {
   final PostModel postKey;
@@ -16,7 +18,7 @@ class PostFloatingButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final post = ref.watch(singlePostProvider(postKey));
     final user = ref.watch(currentUserProvider);
-    final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
+    final isNotSignedUser = ref.watch(anonymousLogInProvider);
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 10),

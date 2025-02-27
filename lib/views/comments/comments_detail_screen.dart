@@ -10,7 +10,7 @@ import 'package:plo/views/comments/comments_widget/comments_detail.dart';
 import 'package:plo/views/comments/comments_widget/comments_profile.dart';
 import 'package:plo/views/comments/comments_widget/comments_screen.dart';
 import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
 final postDetailCurrentUserFutureProvider =

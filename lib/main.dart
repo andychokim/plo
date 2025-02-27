@@ -43,14 +43,17 @@ class MyApp extends StatelessWidget {
           }
           if (snapshot.hasError) {
             return const Scaffold(
-                body: Center(child: Text("There has been an error")));
+              body: Center(
+                child: Text("There has been an error"),
+              ),
+            );
           }
           if (snapshot.hasData) {
             return const CheckEmailAndUsermodelScreen();
             // SignInScreen();
           }
-          return const SignInScreen();
-          // return const WelcomeScreen();
+          // return const SignInScreen();
+          return const WelcomeScreen();
         },
       ),
     );

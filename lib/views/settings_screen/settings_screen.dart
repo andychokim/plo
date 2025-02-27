@@ -2,25 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/providers/admin_provider.dart';
+import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/common/widgets/custom_alert_box.dart';
 import 'package:plo/repository/auth_repository.dart';
 import 'package:plo/views/admin/admin_main_screen.dart';
 import 'package:plo/views/log_in_screen/log_in_screen.dart';
 import 'package:plo/views/settings_screen/likedpost_screen.dart';
-import 'package:plo/views/settings_screen/mypost_screen.dart';
+import 'package:plo/views/settings_screen/mypost_screen/mypost_screen.dart';
 import 'package:plo/views/settings_screen/provider/user_provider.dart';
 import 'package:plo/views/settings_screen/savedpost_screen.dart';
 import 'package:plo/views/settings_screen/settings_controller.dart';
 import 'package:plo/views/settings_screen/widgets/list_button_widget.dart';
 import 'package:plo/views/settings_screen/widgets/modal_bottom_sheet.dart';
-import 'package:plo/views/welcome_screen/welcome_screen.dart';
+
+import '../../common/providers/login_verification_provider.dart';
+// import 'package:plo/views/welcome_screen/welcome_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   void goToSignInScreen(BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+        // MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
         (Route<dynamic> route) => false);
   }
 
@@ -28,7 +32,9 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsyncValue = ref.watch(userProvider);
     final user = ref.watch(userInfoProvider);
-    print("my profile screen isAdmin : ${ref.watch(isAdminProvider)}");
+    // final anonymousLogIn = ref.watch(anonymousLogInProvider);
+    logToConsole("my profile screen isAdmin : ${ref.watch(isAdminProvider)}");
+    // logToConsole("currently logged in user is anonymous: $anonymousLogIn");
     return Scaffold(
       body: userAsyncValue.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -46,8 +52,7 @@ class SettingsScreen extends ConsumerWidget {
                           CircleAvatar(
                             radius: 62,
                             backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                NetworkImage(user.userProfilePictureURL),
+                            backgroundImage: NetworkImage(user.userProfilePictureURL),
                           ),
                           //이미지 추가 팝업메뉴 버튼
                           Positioned(
@@ -70,14 +75,12 @@ class SettingsScreen extends ConsumerWidget {
                       const SizedBox(height: 20),
                       Text(
                         user.nickname,
-                        style: const TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         '${user.major} ${user.grade}학년',
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(height: 40),
                       const Divider(
@@ -90,14 +93,10 @@ class SettingsScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
                               child: const Text(
                                 "게시물 관리자",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 100, 100, 100)),
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 100, 100, 100)),
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -110,8 +109,7 @@ class SettingsScreen extends ConsumerWidget {
                               callback: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AdminMainScren(),
+                                    builder: (context) => const AdminMainScren(),
                                   ),
                                 );
                               },
@@ -126,10 +124,7 @@ class SettingsScreen extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: const Text(
                               "나만의 기록들",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 100, 100, 100)),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 100, 100, 100)),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -145,20 +140,20 @@ class SettingsScreen extends ConsumerWidget {
                               ));
                             },
                           ),
-                          ListButtonWidget(
-                            title: "저장한 게시물",
-                            icon: const Icon(
-                              Icons.bookmark_outline_rounded,
-                              size: 33,
-                            ),
-                            callback: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const SavedPostScreen(),
-                                ),
-                              );
-                            },
-                          ),
+                          // ListButtonWidget(
+                          //   title: "저장한 게시물",
+                          //   icon: const Icon(
+                          //     Icons.bookmark_outline_rounded,
+                          //     size: 33,
+                          //   ),
+                          //   callback: () {
+                          //     Navigator.of(context).push(
+                          //       MaterialPageRoute(
+                          //         builder: (context) => const SavedPostScreen(),
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
                           ListButtonWidget(
                             title: "좋아요한 게시물",
                             icon: const Icon(
@@ -187,10 +182,7 @@ class SettingsScreen extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: const Text(
                               "앱 설정",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 100, 100, 100)),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 100, 100, 100)),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -218,10 +210,7 @@ class SettingsScreen extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: const Text(
                               "계정관리",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 100, 100, 100)),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 100, 100, 100)),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -232,8 +221,7 @@ class SettingsScreen extends ConsumerWidget {
                                 size: 33,
                               ),
                               callback: () async {
-                                bool? confirmed =
-                                    await AlertBox.showYesOrNoAlertDialogue(
+                                bool? confirmed = await AlertBox.showYesOrNoAlertDialogue(
                                   context,
                                   "로그아웃 하시겠습니까?",
                                 );
@@ -250,20 +238,15 @@ class SettingsScreen extends ConsumerWidget {
                                 size: 33,
                               ),
                               callback: () async {
-                                bool? isDelete =
-                                    await AlertBox.showYesOrNoAlertDialogue(
-                                        context, "정말로 계정을 삭제하시겠습니까?");
+                                bool? isDelete = await AlertBox.showYesOrNoAlertDialogue(context, "정말로 계정을 삭제하시겠습니까?");
                                 if (isDelete == true) {
                                   final result = await deleteUserAccount(ref);
-                                  if (result.toString() ==
-                                      'auth/requires-recent-login') {
+                                  if (result.toString() == 'auth/requires-recent-login') {
                                     const snackBar = SnackBar(
-                                      content: Text(
-                                          '로그인 기간이 오래되어 인증정보가 만료되었습니다.\n. 로그아웃 후 다시 로그인한 다음 시도하여주시기 바랍니다.'),
+                                      content: Text('로그인 기간이 오래되어 인증정보가 만료되었습니다.\n. 로그아웃 후 다시 로그인한 다음 시도하여주시기 바랍니다.'),
                                     );
 
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                   } else {
                                     goToSignInScreen(context);
                                   }

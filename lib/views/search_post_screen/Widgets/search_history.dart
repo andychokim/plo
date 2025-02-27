@@ -16,7 +16,11 @@ class SearchHistory extends ConsumerWidget {
     return Expanded(
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, childAspectRatio: 1 / 0.4, crossAxisSpacing: 10, mainAxisSpacing: 10),
+          crossAxisCount: 2,
+          childAspectRatio: 1 / 0.4,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
         itemCount: searchHistoryList.length,
         itemBuilder: (context, index) {
           return SizedBox(

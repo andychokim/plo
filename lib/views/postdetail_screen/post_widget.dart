@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/functions.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/model/post_model.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 
 class PostWidget extends ConsumerWidget {
   final PostModel post;

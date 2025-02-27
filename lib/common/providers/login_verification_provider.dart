@@ -9,3 +9,5 @@ final logInVerifyProvider = StateProvider<bool>((ref) {
   }
   return true;
 });
+
+final anonymousLogInProvider = StateProvider<bool>((ref) => false);

@@ -18,7 +18,7 @@ import 'package:plo/repository/image_picker_repository.dart';
 import 'package:plo/views/home_screen/main_post_list_provider.dart';
 import 'package:plo/views/post_write/post_write_providers.dart';
 import 'package:plo/views/post_write/post_write_screen/widgets/post_image_view.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CreatePostController extends StateNotifier<AsyncValue<void>> {

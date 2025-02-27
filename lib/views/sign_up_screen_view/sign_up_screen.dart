@@ -36,9 +36,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   //Pass email and password to signup_provider
   void _setProvider() {
-    ref
-        .watch(signUpInfoProvider.notifier)
-        .setEmailAndPassword(_email, _password, _passwordRetype);
+    ref.watch(signUpInfoProvider.notifier).setEmailAndPassword(_email, _password, _passwordRetype);
   }
 
   void _sendVerifyCodeToEmail() async {
@@ -48,9 +46,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       });
       _setProvider();
       var res = await sendVerifyCodeToEmail(_email);
-      res.fold(
-          (errorMessage) => ErrorHandler().showSnackBar(context, errorMessage),
-          (response) {
+      res.fold((errorMessage) => ErrorHandler().showSnackBar(context, errorMessage), (response) {
         setState(() {
           _isLoading = false;
         });
@@ -93,10 +89,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
             defaultSpacing,
 
-            textInputBox(
-                text: '학교 이메일',
-                controller: _email,
-                validator: (value) => Validator.validatePSUEmail(value)),
+            textInputBox(text: '학교 이메일', controller: _email, validator: (value) => Validator.validatePSUEmail(value)),
 
             defaultSpacing,
 
@@ -119,8 +112,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               onPressed: () => setState(() {
                 _isPasswordVisible = !_isPasswordVisible;
               }),
-              validator: (value) =>
-                  Validator.isSamePassword(value, _password.text),
+              validator: (value) => Validator.isSamePassword(value, _password.text),
             ),
 
             const SizedBox(height: 90),
