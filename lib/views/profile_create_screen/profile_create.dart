@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:plo/common/utils/log_util.dart';
+
+import '../../common/utils/log_util.dart';
 import '../../common/validator/validator.dart';
 import '../../common/widgets/custom_app_bar.dart';
 import '../../common/widgets/custom_button.dart';
@@ -24,8 +25,7 @@ class ProfileCreate extends ConsumerStatefulWidget {
 class _ProfileState extends ConsumerState<ProfileCreate> {
   //local 객체들
   File? image; //File? 타입 객체 - 프로필 이미지 로컬에서 받는 용도
-  final formKey =
-      GlobalKey<FormState>(); //GlobalKey 타입 객체 - onClicked의 validation 위한 Key
+  final formKey = GlobalKey<FormState>(); //GlobalKey 타입 객체 - onClicked의 validation 위한 Key
   //AuthMethods 타입 객체 - 받은 유저 정보(inputs)들 authenticator에 올리기 위한 용도
 
   //controllers - 각각 유저 input 받는 textformfield들의 validator들을 위한 controllers
@@ -56,8 +56,7 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
         image = file;
       });
     } else if (result is ErrorReturnType) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(result.message!)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result.message!)));
     }
   }
 
@@ -90,8 +89,7 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                 //프로필 사진 추가 Stateful Stack
                 pfpStack(
                   pfpImage: image,
-                  bgImage:
-                      const AssetImage('assets/images/profile_default.png'),
+                  bgImage: const AssetImage('assets/images/profile_default.png'),
                   items: (BuildContext context) => <PopupMenuEntry>[
                     dropMenuItem(
                       val: "photo",
@@ -153,8 +151,7 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                               textAbove: "닉네임",
                               shadowOffset: const Offset(0, 1),
                               controller: nickname,
-                              validator: (value) =>
-                                  Validator.validateNickName(value),
+                              validator: (value) => Validator.validateNickName(value),
                             ),
                             //학년 입력
                             textFormFieldErrWithShadow(
@@ -167,16 +164,14 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                                 ),
                                 LengthLimitingTextInputFormatter(1),
                               ],
-                              validator: (value) =>
-                                  Validator.validateGrade(value),
+                              validator: (value) => Validator.validateGrade(value),
                             ),
                             //전공 입력
                             textFormFieldErrWithShadow(
                               textAbove: "전공",
                               shadowOffset: const Offset(0, 1),
                               controller: major,
-                              validator: (value) =>
-                                  Validator.validateMajor(value),
+                              validator: (value) => Validator.validateMajor(value),
                               textInputAction: TextInputAction.done,
                             ),
                           ],
@@ -217,13 +212,7 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                               // });
                               bool isSignedUp = await ref
                                   .watch(selectedFile.notifier)
-                                  .checkNickNameDupsThenSignUp(
-                                      email,
-                                      password,
-                                      nickname.text,
-                                      grade.text,
-                                      major.text,
-                                      profilePic);
+                                  .checkNickNameDupsThenSignUp(email, password, nickname.text, grade.text, major.text, profilePic);
                               if (isSignedUp) {
                                 Navigator.push(
                                   context,
@@ -231,17 +220,14 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                                     builder: (context) => const SignInScreen(),
                                   ),
                                 );
-                                logToConsole(
-                                    'User Profile create Successfully into the server');
+                                logToConsole('User Profile create Successfully into the server');
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text(
-                                        "유저 프로필 사진 혹은 계정 생성을 하는데 실패하였습니다."),
+                                    content: Text("유저 프로필 사진 혹은 계정 생성을 하는데 실패하였습니다."),
                                   ),
                                 );
-                                logToConsole(
-                                    "User Profile create or Upload Failed");
+                                logToConsole("User Profile create or Upload Failed");
                               }
                             }
                           },

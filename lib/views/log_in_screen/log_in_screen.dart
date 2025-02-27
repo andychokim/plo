@@ -8,7 +8,12 @@ import 'package:plo/views/forgot_password/forgot_password_screen.dart';
 import 'package:plo/views/home_screen/home_screen.dart';
 import 'package:plo/views/log_in_screen/log_in_controller.dart';
 import 'package:plo/views/log_in_screen/widgets/log_in_textfield.dart';
+import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 import 'package:plo/views/sign_up_screen_view/sign_up_screen.dart';
+
+import '../../common/providers/login_verification_provider.dart';
+import '../../common/utils/log_util.dart';
+import '../../common/widgets/custom_alert_box.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -21,7 +26,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final snackbar = const SnackBar(content: Text("result"));
+  final snackbar = const SnackBar(content: Text("Invalid email or password"));
 
   @override
   void dispose() {
@@ -50,8 +55,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             'People Link One',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          Image.asset('assets/images/pennstate_logo.png',
-              width: 130, height: 130),
+          Image.asset('assets/images/pennstate_logo.png', width: 130, height: 130),
           const SizedBox(height: 10),
           LogInTextFieldWidget(
             formKey: _formKey,
@@ -71,8 +75,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     ),
                   );
                 },
-                child: const Text("Forgot Password?",
-                    style: TextStyle(fontSize: 14)),
+                child: const Text("Forgot Password?", style: TextStyle(fontSize: 14)),
               ),
             ],
           ),
@@ -82,24 +85,21 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             width: MediaQuery.sizeOf(context).width * 0.6,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                 backgroundColor: Colors.black,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
               onPressed: () async {
-                showDialog(
-                  context: context,
-                  builder: (context) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
+                // showDialog(
+                //   context: context,
+                //   builder: (context) => const Center(
+                //     child: CircularProgressIndicator(),
+                //   ),
+                // );
                 if (_formKey.currentState!.validate()) {
-                  final result = await ref
-                      .watch(loginController.notifier)
-                      .loginWithEmail();
+                  final result = await ref.watch(loginController.notifier).loginWithEmail();
                   Navigator.of(context).pop();
 
                   if (result == ReturnTypeENUM.success.toString()) {
@@ -116,11 +116,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   Navigator.of(context).pop();
                 }
               },
-              child: const Text("Login",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)),
+              child: const Text(
+                "Login",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
             ),
           ),
           defaultSpacing,
@@ -165,15 +164,24 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            child: const Text("Continue Without Login",
-                style: TextStyle(color: Colors.black)),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
-                ),
-              );
+            child: const Text("로그인 없이 계속하기", style: TextStyle(color: Colors.black)),
+            onPressed: () async {
+              bool isConfirmed = false;
+              isConfirmed = (await AlertBox.showYesOrNoAlertDialogue(context, "정말로 로그인 없이 계속하시겠습니까?"))!;
+              if (isConfirmed) {
+                ref.watch(anonymousLogInProvider.notifier).state = true;
+                final result = await ref.watch(loginController.notifier).nonUserLogin();
+                if (result == ReturnTypeENUM.success.toString()) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomeScreen(),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                }
+              }
             },
           )
         ],

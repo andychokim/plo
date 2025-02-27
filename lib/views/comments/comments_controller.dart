@@ -11,7 +11,7 @@ import 'package:plo/model/state_model/create_edit_comment_model.dart';
 import 'package:plo/repository/firebase_comments_repository.dart';
 import 'package:plo/views/comments/comments_provider.dart';
 import 'package:plo/views/comments/comments_widget/commentlists/comments_list_provider.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {

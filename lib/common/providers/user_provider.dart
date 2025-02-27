@@ -11,8 +11,7 @@ class UserProvider extends StateNotifier<UserModel?> {
 
   void setUser(UserModel? user) {
     state = user;
-    print(
-        "currently signed in as ${user?.userNickname}. UID: ${user?.userUid}}");
+    log("currently signed in as ${user?.userNickname}. UID: ${user?.userUid}}");
   }
 
   Future<bool> updateUserFromFirebase() async {
@@ -33,8 +32,7 @@ class UserProvider extends StateNotifier<UserModel?> {
   }
 }
 
-final currentUserProvider =
-    StateNotifierProvider<UserProvider, UserModel?>((ref) {
+final currentUserProvider = StateNotifierProvider<UserProvider, UserModel?>((ref) {
   ref.onDispose(() {
     logToConsole("currentUserProvider disposed");
   });

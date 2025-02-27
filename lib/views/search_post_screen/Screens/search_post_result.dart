@@ -31,7 +31,6 @@ class _SearchPostResultState extends ConsumerState<SearchPostResult> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.watch(filterOptionsProvider.notifier).setSearchQuery(widget.searchQuery);
-      // ref.watch(filterOptionsProvider.notifier).setFilterOptions()
     });
   }
 
@@ -70,8 +69,10 @@ class ProductResultWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     logToConsole("Product result widget build was called");
+    final searchPostState = ref.watch(searchPostFutureProvider(filterOptions));
+
     return Container(
-      child: ref.watch(searchPostFutureProvider(filterOptions)).when(
+      child: searchPostState.when(
             loading: () {
               return const Center(child: CircularProgressIndicator());
             },

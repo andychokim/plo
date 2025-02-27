@@ -6,8 +6,10 @@ import 'package:plo/model/post_model.dart';
 import 'package:plo/views/comments/comments_widget/currentuser_kebob_menu.dart';
 import 'package:plo/views/comments/comments_widget/otheruser_kebob_menu.dart';
 import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
+
+import '../../../common/providers/login_verification_provider.dart';
 
 class KebobIconButton extends ConsumerWidget {
   final CommentModel commentKey;
@@ -23,7 +25,7 @@ class KebobIconButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final comment = ref.watch(singleCommentProvider(commentKey));
     final user = ref.watch(currentUserProvider);
-    final isNotSignedInUser = ref.watch(proceedWithoutLoginProvider);
+    final isNotSignedInUser = ref.watch(anonymousLogInProvider);
 
     return Container(
         width: 35,

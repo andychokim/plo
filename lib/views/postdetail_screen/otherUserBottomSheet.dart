@@ -7,13 +7,15 @@ import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsh
 import 'package:plo/views/postdetail_screen/report_screen/reportScreen.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
+import '../../common/providers/login_verification_provider.dart';
+
 class PostDetailOtherUserBottomSheet extends ConsumerWidget {
   final PostModel postKey;
   const PostDetailOtherUserBottomSheet({super.key, required this.postKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
+    final isNotSignedUser = ref.watch(anonymousLogInProvider);
     return DefaultModalBottomSheet(
       title: "옵션",
       child: Column(

@@ -9,12 +9,14 @@ import 'package:plo/views/postdetail_screen/block_user/block_comment_user/block_
 import 'package:plo/views/postdetail_screen/report_screen/report_screen_comment/report_comment_screen.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
+import '../../../common/providers/login_verification_provider.dart';
+
 class CommentDetailOtherUserKebobIcon extends ConsumerWidget {
   final CommentModel commentKey;
   const CommentDetailOtherUserKebobIcon({super.key, required this.commentKey});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
+    final isNotSignedUser = ref.watch(anonymousLogInProvider);
     return DefaultModalBottomSheet(
       title: "옵션",
       child: Column(

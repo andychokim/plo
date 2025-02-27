@@ -18,10 +18,7 @@ class FirebaseUserRepository {
 
   Future<bool> uploadUserModel(UserModel user) async {
     try {
-      await _firebase
-          .collection(FirebaseConstants.usercollectionName)
-          .doc(user.userUid)
-          .set(user.toJson());
+      await _firebase.collection(FirebaseConstants.usercollectionName).doc(user.userUid).set(user.toJson());
       _logHelper("Set", "uploadUserModel");
       return true;
     } catch (error) {
@@ -32,14 +29,11 @@ class FirebaseUserRepository {
 
   Future<UserModel?> fetchUser() async {
     try {
-      DocumentSnapshot documentSnapshot = await _firebase
-          .collection(FirebaseConstants.usercollectionName)
-          .doc(_auth.currentUser!.uid)
-          .get();
+      DocumentSnapshot documentSnapshot =
+          await _firebase.collection(FirebaseConstants.usercollectionName).doc(_auth.currentUser!.uid).get();
       log("Get CurrentUserModel");
       if (documentSnapshot.exists) {
-        UserModel? jsontoUserConverted =
-            UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+        UserModel? jsontoUserConverted = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
 
         return jsontoUserConverted;
       } else {
@@ -54,13 +48,9 @@ class FirebaseUserRepository {
 
   Future<UserModel?> fetchUserbyUid(String userUid) async {
     try {
-      DocumentSnapshot documentSnapshot = await _firebase
-          .collection(FirebaseConstants.usercollectionName)
-          .doc(userUid)
-          .get();
+      DocumentSnapshot documentSnapshot = await _firebase.collection(FirebaseConstants.usercollectionName).doc(userUid).get();
       if (documentSnapshot.exists) {
-        UserModel? jsonUserconverted =
-            UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+        UserModel? jsonUserconverted = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
         return jsonUserconverted;
       } else {
         return null;
@@ -73,10 +63,7 @@ class FirebaseUserRepository {
 
   Future<bool> userAdmin(String userUid) async {
     try {
-      DocumentSnapshot documentSnapshot = await _firebase
-          .collection(FirebaseConstants.adminUsers)
-          .doc(userUid)
-          .get();
+      DocumentSnapshot documentSnapshot = await _firebase.collection(FirebaseConstants.adminUsers).doc(userUid).get();
       log("Document data: ${documentSnapshot.data()}");
 
       if (documentSnapshot.exists && documentSnapshot.data() != null) {
@@ -94,13 +81,10 @@ class FirebaseUserRepository {
   Future<ReturnType> blockUser(String blockingUserUid) async {
     try {
       bool isUserBlocked = false;
-      final DocumentSnapshot documentSnapshot = await _firebase
-          .collection(FirebaseConstants.usercollectionName)
-          .doc(_auth.currentUser!.uid)
-          .get();
+      final DocumentSnapshot documentSnapshot =
+          await _firebase.collection(FirebaseConstants.usercollectionName).doc(_auth.currentUser!.uid).get();
       if (documentSnapshot.exists && documentSnapshot.data() != null) {
-        final UserModel? user =
-            UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+        final UserModel? user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
         if (user != null) {
           List<String> blockedUsers = user.blockedUsers;
           if (blockedUsers.contains(blockingUserUid)) {
@@ -119,8 +103,7 @@ class FirebaseUserRepository {
         }
         return ErrorReturnType(message: "User is Null");
       }
-      return SuccessReturnType(
-          isSuccess: false, message: "DocumentSnapshot does not exists");
+      return SuccessReturnType(isSuccess: false, message: "DocumentSnapshot does not exists");
     } catch (error) {
       return ErrorReturnType(message: error.toString(), data: error);
     }

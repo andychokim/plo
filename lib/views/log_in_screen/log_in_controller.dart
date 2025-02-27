@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/auth_repository.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 
 class LoginWithEmailController extends StateNotifier<AsyncValue<void>> {
   final Ref ref;
@@ -16,20 +16,39 @@ class LoginWithEmailController extends StateNotifier<AsyncValue<void>> {
 
   Future<String> loginWithEmail() async {
     state = const AsyncValue.loading();
-    final result = await ref
-        .watch(authRepository)
-        .signInUserWithEmail(_emailController.text, _passwordController.text);
+    final result = await ref.watch(authRepository).signInUserWithEmail(_emailController.text, _passwordController.text);
     final user = ref.watch(firebaseUserRepositoryProvider).currentUser;
     try {
       if (user == null) {
         state = AsyncValue.error("User Not found", StackTrace.current);
         return "User Not Found";
       }
-      UserModel? userFetched =
-          await ref.read(firebaseUserRepositoryProvider).fetchUser();
+      UserModel? userFetched = await ref.read(firebaseUserRepositoryProvider).fetchUser();
       if (userFetched == null) {
-        state = AsyncValue.error(
-            "User Does not exist in the model", StackTrace.current);
+        state = AsyncValue.error("User Does not exist in the model", StackTrace.current);
+        return "User Does not exist in the database";
+      } else {
+        ref.read(currentUserProvider.notifier).setUser(userFetched);
+      }
+      return result;
+    } catch (error) {
+      state = AsyncValue.error(error.toString(), StackTrace.current);
+      return error.toString();
+    }
+  }
+
+  Future<String> nonUserLogin() async {
+    state = const AsyncValue.loading();
+    final result = await ref.watch(authRepository).nonUserSignIn();
+    final user = ref.watch(firebaseUserRepositoryProvider).currentUser;
+    try {
+      if (user == null) {
+        state = AsyncValue.error("User Not found", StackTrace.current);
+        return "User Not Found";
+      }
+      UserModel? userFetched = await ref.read(firebaseUserRepositoryProvider).fetchUser();
+      if (userFetched == null) {
+        state = AsyncValue.error("User Does not exist in the model", StackTrace.current);
         return "User Does not exist in the database";
       } else {
         ref.read(currentUserProvider.notifier).setUser(userFetched);
@@ -42,6 +61,5 @@ class LoginWithEmailController extends StateNotifier<AsyncValue<void>> {
   }
 }
 
-final loginController = StateNotifierProvider.autoDispose<
-    LoginWithEmailController,
-    AsyncValue<void>>((ref) => LoginWithEmailController(ref));
+final loginController =
+    StateNotifierProvider.autoDispose<LoginWithEmailController, AsyncValue<void>>((ref) => LoginWithEmailController(ref));

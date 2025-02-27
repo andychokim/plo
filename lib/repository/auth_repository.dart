@@ -8,7 +8,7 @@ import 'package:plo/model/erro_handling/error_handling_auth.dart';
 import 'package:plo/model/types/enum_type.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebasestoroage_respository.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -30,18 +30,11 @@ class AuthMethods {
   }) async {
     String res = "Some error occured";
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          nickname.isNotEmpty ||
-          grade.isNotEmpty ||
-          major.isNotEmpty ||
-          file != null) {
-        UserCredential cred = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
+      if (email.isNotEmpty || password.isNotEmpty || nickname.isNotEmpty || grade.isNotEmpty || major.isNotEmpty || file != null) {
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
         String photoUrl = file != null
-            ? await StorageMethods()
-                .uploadProfileImageToStorage('profilePics', file, false)
+            ? await StorageMethods().uploadProfileImageToStorage('profilePics', file, false)
             : "https://firebasestorage.googleapis.com/v0/b/project-plo.appspot.com/o/profilePics%2Fprofile_default.png?alt=media&token=46c5a927-ba2c-4901-9a2e-d3f7c60aca2e";
 
         //이런 방식으로 하면 doc uid가 자동으로 auth uid로 생성이 됨
@@ -63,10 +56,7 @@ class AuthMethods {
             likedPosts: [],
             blockedUsers: []);
 
-        await _firestore
-            .collection(FirebaseConstants.usercollectionName)
-            .doc(userModel.userUid)
-            .set(userModel.toJson());
+        await _firestore.collection(FirebaseConstants.usercollectionName).doc(userModel.userUid).set(userModel.toJson());
         ref.read(currentUserProvider.notifier).setUser(userModel);
         res = 'success';
       }
@@ -115,6 +105,20 @@ class AuthMethods {
       return error.toString();
 
       // Handle general exception
+    }
+  }
+
+  Future<String> nonUserSignIn() async {
+    try {
+      await _auth.signInAnonymously();
+      // await ref.read(currentUserProvider.notifier).updateUserFromFirebase();
+      return ReturnTypeENUM.success.toString();
+    } on FirebaseAuthException catch (error) {
+      logToConsole("Error ${error.toString()} in nonUserSignIn");
+      return error.toString();
+    } catch (error) {
+      logToConsole("Error ${error.toString()} in nonUserSignIn");
+      return error.toString();
     }
   }
 }

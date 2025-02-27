@@ -9,7 +9,7 @@ import 'package:plo/model/types/post_report_model.dart';
 import 'package:plo/model/types/report_type.dart';
 import 'package:plo/model/types/return_type.dart';
 import 'package:plo/repository/firebase_report_repository.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 
 class ReportPostController extends StateNotifier<AsyncValue<void>> {
   final Ref ref;

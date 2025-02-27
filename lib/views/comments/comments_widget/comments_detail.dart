@@ -7,7 +7,7 @@ import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/views/comments/comments_widget/comments_kebob_button.dart';
 import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
 class CommentDetailWidget extends ConsumerStatefulWidget {

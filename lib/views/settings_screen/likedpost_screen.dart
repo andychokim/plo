@@ -20,12 +20,10 @@ class _LikedPostScreenState extends State<LikedPostScreen> {
   @override
   void initState() {
     super.initState();
-    getPosts(FirebaseConstants.likedRecordscollectionName, lastDocument,
-        documentList);
+    getPosts(FirebaseConstants.likedRecordscollectionName, lastDocument, documentList);
     _controller.addListener(() {
       if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-        getPosts(FirebaseConstants.likedRecordscollectionName, lastDocument,
-            documentList);
+        getPosts(FirebaseConstants.likedRecordscollectionName, lastDocument, documentList);
       }
     });
   }
@@ -34,13 +32,13 @@ class _LikedPostScreenState extends State<LikedPostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackButtonAppBar(title: "좋아요한 게시물"),
-      body: ListView.builder(
-        itemCount: documentList.length,
-        itemBuilder: (context, index) => PostCard(
-          snap: documentList[index].data(),
-        ),
-        controller: _controller,
-      ),
+      // body: ListView.builder(
+      //   itemCount: documentList.length,
+      //   itemBuilder: (context, index) => PostCard(
+      //       // snap: documentList[index].data(),
+      //       ),
+      //   controller: _controller,
+      // ),
     );
   }
 }

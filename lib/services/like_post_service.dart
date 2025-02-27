@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/constants/firebase_contants.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/user_model.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 
 class LikePostService {
   Ref ref;

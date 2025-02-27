@@ -6,7 +6,7 @@ import 'package:plo/common/utils/functions.dart';
 import 'package:plo/common/widgets/square_image_widget.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/category_type.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ExpandedPostWidget extends ConsumerWidget {

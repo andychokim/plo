@@ -8,7 +8,7 @@ import 'package:plo/common/providers/admin_provider.dart';
 import 'package:plo/extensions/ref_dipsose.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 
 class CheckAppRequirementController extends StateNotifier<AsyncValue<void>> {
   final BuildContext context;

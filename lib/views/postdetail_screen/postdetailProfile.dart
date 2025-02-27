@@ -4,7 +4,7 @@ import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/common/widgets/profile_circular_image.dart';
 import 'package:plo/common/widgets/shimmer_style.dart';
 import 'package:plo/model/post_model.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
 import 'package:plo/views/test_screen.dart';
 import 'package:shimmer/shimmer.dart';

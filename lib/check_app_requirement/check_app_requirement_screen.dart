@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/check_app_requirement/check_app_requirement_controller.dart';
 import 'package:plo/common/providers/admin_provider.dart';
 import 'package:plo/views/home_screen/home_screen.dart';
-import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/common/providers/user_provider.dart';
 
 // final isEmailVerifiedProvider = StateProvider<bool>((ref) => FirebaseAuth.instance.currentUser!.emailVerified);
 final isProfileSetUpProvider = StateProvider<bool>((ref) => false);
